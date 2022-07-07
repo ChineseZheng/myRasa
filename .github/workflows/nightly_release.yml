@@ -24,7 +24,7 @@ jobs:
 
           # Find latest rasa-oss version
           echo "Trying to find the latest rasa-oss version..."
-          LATEST_RASA_VERSION=$(python -c "import sys; import os; sys.path.append('src/rasa/rasa'); from version import __version__; print(__version__)")
+          LATEST_RASA_VERSION=$(python -c "import sys; import os; sys.path.append('${{ github.workspace }}/rasa'); from rasa.version import __version__; print(__version__)")
           echo "Current RASA version: ${LATEST_RASA_VERSION}"
 
           LATEST_NIGHTLY_VERSION=$(echo ${LATEST_RASA_VERSION} | awk -F. '{$(NF-1) = $(NF-1) + 1;} {$(NF) = 0;} 1' | sed 's/ /./g')
@@ -46,6 +46,7 @@ jobs:
               repo: context.repo.repo,
               ref: "refs/tags/${{ steps.set_tagname.outputs.tag }}",
               sha: context.sha
+              description: "development build for internal use"
             })
 
 
